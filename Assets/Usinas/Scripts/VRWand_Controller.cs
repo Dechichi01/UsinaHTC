@@ -5,10 +5,12 @@ public class VRWand_Controller : MonoBehaviour {
 
     public LayerMask layerMask;
     public Transform aimTargetPrefab;
+
     private Transform aimTargetInstance;
 
     private SteamVR_TrackedObject trackedObj;
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
+    public float rotInput;
 
     private VRPlayer_Controller playerController;
     private Transform controllerT;
@@ -45,15 +47,11 @@ public class VRWand_Controller : MonoBehaviour {
             }
         }
 
-        Vector2 moveInput = controller.GetAxis(VRInput.trackPadAxis);
-        if (Mathf.Abs(moveInput.x) < 0.3f)
-            moveInput.x = 0;
-        if (Mathf.Abs(moveInput.y) < 0.3f)
-            moveInput.y = 0;
-
-        Vector3 playerMovement = Vector3.ProjectOnPlane(Camera.main.transform.forward,Vector3.up) * moveInput.y + Camera.main.transform.right * moveInput.x;
-        playerController.SetPlayerVelocity(playerMovement);
+        rotInput = controller.GetAxis(VRInput.trackPadAxis).x;
+        if (!controller.GetPress(VRInput.padButton) || Mathf.Abs(rotInput) < 0.3f)
+            rotInput = 0f;
     }
+
 
     void CastRay(Vector3 direction, float maxDistance, Color color, bool drawRay =false)
     {
@@ -81,7 +79,7 @@ public class VRWand_Controller : MonoBehaviour {
                     currentSelectedObject.ChangeToSelectedShader();
                 }
 
-                if (controller.GetPress(VRInput.triggerButton) && hit.collider.transform.parent != controllerT && controllerT.childCount < 2)
+                if (controller.GetPressDown(VRInput.triggerButton) && hit.collider.transform.parent != controllerT && controllerT.childCount < 2)
                 {
                     currentSelectedObject.OnTriggerPress(controllerT);
                     childPickUp = currentSelectedObject.transform;
@@ -99,7 +97,7 @@ public class VRWand_Controller : MonoBehaviour {
                 aimTargetInstance.position = hit.point;
                 aimTargetInstance.gameObject.SetActive(true);
 
-                if (controller.GetPress(VRInput.triggerButton))
+                if (controller.GetPressDown(VRInput.triggerButton))
                 {
                     playerController.transform.position = new Vector3(hit.point.x, playerController.transform.position.y, hit.point.z);
                 }
@@ -141,6 +139,7 @@ public class VRWand_Controller : MonoBehaviour {
     {
         public static Valve.VR.EVRButtonId gripButton = Valve.VR.EVRButtonId.k_EButton_Grip;
         public static Valve.VR.EVRButtonId triggerButton = Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger;
+        public static ulong padButton = SteamVR_Controller.ButtonMask.Touchpad;
 
         public static Valve.VR.EVRButtonId trackPadAxis = Valve.VR.EVRButtonId.k_EButton_Axis0;
 
