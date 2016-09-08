@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SelectableObject : MonoBehaviour {
+public abstract class SelectableObject : MonoBehaviour {
 
     protected bool canInteract;
 
@@ -22,16 +22,9 @@ public class SelectableObject : MonoBehaviour {
 
     }
 
-    virtual public void OnTriggerPress(Transform player)
-    {
-        Debug.LogWarning("SelectableObject base class. You should not be here!");
-    }
+    abstract public void OnTriggerPress(Transform player);
 
-    virtual public bool OnTriggerRelease(Transform player)
-    {
-        Debug.LogWarning("SelectableObject base class. You should not be here!");
-        return false;
-    }
+    abstract public bool OnTriggerRelease(Transform player);
 
     public void ChangeToSelectedShader()
     {
