@@ -27,7 +27,7 @@ public class VRPlayer_Controller : MonoBehaviour {
         float walkFromRight = rightWand.walkInput;
         float walkFromLeft = leftWand.walkInput;
 
-        Vector3 fwd = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        Vector3 fwd = Vector3.ProjectOnPlane(transform.forward, transform.up);
         transform.Translate(fwd * Time.fixedDeltaTime * speed * ((walkFromRight == 0) ? walkFromLeft : walkFromRight));
     }
 

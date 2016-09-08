@@ -3,19 +3,19 @@ using System.Collections;
 
 public class FixedEquipment : SelectableObject {
 
-    private Vector3 arrivePosition;
+    public Transform arrivalLocation;
 
     public float moveTowardsTime = 3f;
     // Use this for initialization
     override protected void Start () {
         base.Start();
-        arrivePosition = transform.FindChild("PlayerPosition").position;
+        //arrivePosition = transform.FindChild("PlayerPosition").position;
 	}
 
     public override void OnTriggerPress(Transform controller)
     {
         Transform player = controller.parent;
-        StartCoroutine(BringPlayer(player.position, arrivePosition, player));
+        StartCoroutine(BringPlayer(player.position, arrivalLocation.position, player));
     }
 
     public override bool OnTriggerRelease(Transform player)
