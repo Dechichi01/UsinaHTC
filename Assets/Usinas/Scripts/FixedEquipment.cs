@@ -39,8 +39,6 @@ public class FixedEquipment : SelectableObject {
             yield return null;
         }
 
-        Debug.Log(player.position);
-
 
         playerCtrl.canMove = true;
     }
