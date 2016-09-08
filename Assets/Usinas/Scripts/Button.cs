@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class Button : SelectableObject {
+public class Button : Interactable {
 
     bool turnedOn = false;
     public Color turnedOffColor;

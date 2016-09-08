@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class DoorHandle : SelectableObject
+public class DoorHandle : Interactable
 {
     public override void OnTriggerPress(Transform player)
     {

@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class ValveHandle : SelectableObject {
+public class ValveHandle : Interactable {
 
     private Vector3 turnedOffRot;
     public Vector3 turnedOnRot;

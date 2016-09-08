@@ -7,6 +7,7 @@ public class VRWand_Controller : MonoBehaviour {
     public Transform aimTargetPrefab;
 
     private Transform aimTargetInstance;
+    private bool castRay = true;
 
     private SteamVR_TrackedObject trackedObj;
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
@@ -17,6 +18,8 @@ public class VRWand_Controller : MonoBehaviour {
     private Transform controllerT;
     private Transform childPickUp;
     private SelectableObject currentSelectedObject;
+
+    bool wasTriggerReleased = true;//Used by OnTriggerStay
 
 	void Start () {
         playerController = this.transform.parent.GetComponent<VRPlayer_Controller>();
@@ -35,7 +38,7 @@ public class VRWand_Controller : MonoBehaviour {
             return;
         }
 
-        if (childPickUp == null || (childPickUp.GetComponent<Pickup>() != null && !childPickUp.GetComponent<Pickup>().onHand) )
+        if (castRay && (childPickUp == null || (childPickUp.GetComponent<Pickup>() != null && !childPickUp.GetComponent<Pickup>().onHand)) )
             CastRay(controllerT.GetChild(0).GetChild(0).forward, 50, Color.red, true);
  
 
@@ -47,6 +50,16 @@ public class VRWand_Controller : MonoBehaviour {
                     childPickUp = null;
             }
         }
+
+        if (controller.GetPressDown(VRInput.gripButton))//Enable/disable raycasting
+        {
+            castRay = !castRay;
+            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);//disable line renderer
+            aimTargetInstance.gameObject.SetActive(false);
+        }
+
+        if (controller.GetPressUp(VRInput.triggerButton))
+            wasTriggerReleased = true;
 
         Vector2 input = controller.GetAxis(VRInput.trackPadAxis);
         rotInput = input.x;
@@ -137,6 +150,19 @@ public class VRWand_Controller : MonoBehaviour {
             {
                 child.GetComponent<Pickup>().MoveAway();
                 child.parent = null;
+            }
+        }
+    }
+
+    void OnTriggerStay(Collider col)
+    {
+        Interactable interactable = col.transform.GetComponent<Interactable>();
+        if (interactable != null && !(interactable is SelectableObject))
+        {
+            if (wasTriggerReleased && controller.GetPress(VRInput.triggerButton))
+            {
+                wasTriggerReleased = false;
+                interactable.OnTriggerPress(playerController.transform);
             }
         }
     }
