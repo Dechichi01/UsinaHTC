@@ -11,6 +11,7 @@ public class VRWand_Controller : MonoBehaviour {
     private SteamVR_TrackedObject trackedObj;
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
     public float rotInput;
+    public float walkInput;
 
     private VRPlayer_Controller playerController;
     private Transform controllerT;
@@ -47,9 +48,14 @@ public class VRWand_Controller : MonoBehaviour {
             }
         }
 
-        rotInput = controller.GetAxis(VRInput.trackPadAxis).x;
+        Vector2 input = controller.GetAxis(VRInput.trackPadAxis);
+        rotInput = input.x;
         if (!controller.GetPress(VRInput.padButton) || Mathf.Abs(rotInput) < 0.3f)
             rotInput = 0f;
+
+        walkInput = input.y;
+        if (!controller.GetPress(VRInput.padButton) || Mathf.Abs(walkInput) < 0.3f)
+            walkInput = 0f;
     }
 
 

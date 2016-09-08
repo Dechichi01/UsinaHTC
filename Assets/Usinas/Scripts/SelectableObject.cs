@@ -1,37 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public abstract class SelectableObject : MonoBehaviour {
-
-    protected bool canInteract;
+public abstract class SelectableObject : Interactable {
 
     public Shader selectedShader;
-    private Shader[] baseShader;
+    protected Shader[] baseShader;
 
-    virtual protected void Start()
+    public MeshRenderer meshRenderer;
+
+    override protected void Start()
     {
         gameObject.tag = "SelectableObject";
         canInteract = true;
 
-        Material[] materials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
-        baseShader = new Shader[materials.Length];
-        for (int i = 0; i < materials.Length; i++)
+        if (meshRenderer != null)
         {
-            baseShader[i] = materials[i].shader;
+            Material[] materials = meshRenderer.materials;
+            baseShader = new Shader[materials.Length];
+            for (int i = 0; i < materials.Length; i++)
+            {
+                baseShader[i] = materials[i].shader;
+            }
         }
-
     }
-
-    abstract public void OnTriggerPress(Transform player);
-
-    abstract public bool OnTriggerRelease(Transform player);
 
     public void ChangeToSelectedShader()
     {
+        if (meshRenderer == null || selectedShader == null) return;
         if (canInteract)
         {
-            Material[] materials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
-            Renderer renderer = transform.GetChild(0).GetComponent<Renderer>();
+            Material[] materials = meshRenderer.materials;
+            Renderer renderer = meshRenderer.transform.GetComponent<Renderer>();
             for (int i = 0; i < materials.Length; i++)
             {
                 materials[i].shader = selectedShader;
@@ -44,9 +44,10 @@ public abstract class SelectableObject : MonoBehaviour {
 
     public void ChangeToBaseShader()
     {
+        if (meshRenderer == null) return;
         if (canInteract)
         {
-            Material[] materials = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+            Material[] materials = meshRenderer.materials;
             for (int i = 0; i < materials.Length; i++)
             {
                 materials[i].shader = baseShader[i];

@@ -1,15 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Interactable : MonoBehaviour {
+[RequireComponent (typeof(BoxCollider))]
+public abstract class Interactable : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    protected bool canInteract;
+
+    virtual protected void Start()
+    {
+        gameObject.tag = "Interactable";
+        canInteract = true;
+    }
+
+    abstract public void OnTriggerPress(Transform player);
+
+    abstract public bool OnTriggerRelease(Transform player);
+
 }
