@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class ValveHandle : Interactable {
+public class ValveHandle : MonoBehaviour {
 
     private Vector3 turnedOffRot;
     public Vector3 turnedOnRot;
