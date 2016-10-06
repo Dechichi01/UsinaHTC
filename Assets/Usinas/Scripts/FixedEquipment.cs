@@ -14,8 +14,12 @@ public class FixedEquipment : SelectableObject {
 
     public override void OnTriggerPress(Transform controller)
     {
-        Transform player = controller.parent;
-        StartCoroutine(BringPlayer(player.position, arrivalLocation.position, player));
+        ChangeToBaseShader();
+        Transform player = controller.root;
+        Vector3 delta = Camera.main.transform.position - player.position;
+        delta.y = 0;
+        Vector3 arrivalPos = new Vector3(arrivalLocation.position.x, player.position.y, arrivalLocation.position.z) - delta;
+        StartCoroutine(BringPlayer(player.position, player.rotation, arrivalPos, arrivalLocation.rotation, player));
     }
 
     public override bool OnTriggerRelease(Transform player)
@@ -23,7 +27,7 @@ public class FixedEquipment : SelectableObject {
         return true;
     }
 
-    IEnumerator BringPlayer(Vector3 start, Vector3 end, Transform player)
+    protected virtual IEnumerator BringPlayer(Vector3 startPos, Quaternion startRot, Vector3 endPos, Quaternion endRot, Transform player)
     {
         VRPlayer_Controller playerCtrl = player.GetComponent<VRPlayer_Controller>();
         playerCtrl.canMove = false;
@@ -35,10 +39,10 @@ public class FixedEquipment : SelectableObject {
         while (percent <= 1)
         {
             percent += (Time.deltaTime * moveTowardsSpeed);
-            player.position = Vector3.Lerp(start, end, percent);
+            player.position = Vector3.Lerp(startPos, endPos, percent);
+            player.rotation = Quaternion.Lerp(startRot, endRot, percent);
             yield return null;
         }
-
 
         playerCtrl.canMove = true;
     }

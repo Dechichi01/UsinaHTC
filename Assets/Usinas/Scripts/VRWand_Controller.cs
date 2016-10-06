@@ -5,13 +5,16 @@ public class VRWand_Controller : MonoBehaviour {
 
     public LayerMask layerMask;
     public Transform aimTargetPrefab;
+    public HandController hand;
 
     private Transform aimTargetInstance;
     private bool castRay = true;
 
     private SteamVR_TrackedObject trackedObj;
     private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
+    [HideInInspector]
     public float rotInput;
+    [HideInInspector]
     public float walkInput;
 
     private VRPlayer_Controller playerController;
@@ -97,7 +100,6 @@ public class VRWand_Controller : MonoBehaviour {
                     currentSelectedObject = obj;
                     currentSelectedObject.ChangeToSelectedShader();
                 }
-                if (controller.GetPressDown(VRInput.triggerButton)) Debug.Log("Trigger");
 
                 if (controller.GetPressDown(VRInput.triggerButton) && hit.collider.transform.parent != controllerT /*&& controllerT.childCount < 2*/)
                 {
