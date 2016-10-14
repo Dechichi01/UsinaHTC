@@ -12,7 +12,7 @@ public class Panel : FixedEquipment {
     {
         if (!canInteract) return;
         base.OnTriggerPress(controller);
-        canInteract = false;
+        DisableInteractions();
         controller.GetComponent<VRWand_Controller>().hand.ControllerOff(controller.GetComponent<VRWand_Controller>());//hand not holding controller anymore
         controller.FindChild("Model").gameObject.SetActive(false);
     }

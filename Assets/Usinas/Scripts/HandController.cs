@@ -59,9 +59,14 @@ public class HandController : MonoBehaviour {
         Transform parent = transform.parent;
         transform.parent = null;
 
-        Vector3 delta = panel.position - transform.position;//
+        Vector3 delta = new Vector3(0.273831f, -0.066783f, 0.459134f);//distance from hand to panel (on animation)
+
         Vector3 start = transform.position;
-        Vector3 end = panel.position - delta;
+        //Vector3 end = panel.position - delta;
+        Vector3 end = panel.position;
+
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = panel.rotation;
 
         float percent = 0;
         float speed = 1 / 0.5f;
@@ -70,6 +75,7 @@ public class HandController : MonoBehaviour {
         {
             percent += Time.deltaTime * speed;
             transform.position = Vector3.Lerp(start, end, percent);
+            transform.rotation = Quaternion.Lerp(startRot, endRot, percent);
             yield return null;
         }
 
@@ -87,8 +93,8 @@ public class HandController : MonoBehaviour {
         start = transform.localPosition;
         end = startLocalPos;
 
-        Quaternion startRot = transform.localRotation;
-        Quaternion endRot = startLocalRot;
+        startRot = transform.localRotation;
+        endRot = startLocalRot;
 
         percent = 0;
         speed = 1 / 0.5f;
