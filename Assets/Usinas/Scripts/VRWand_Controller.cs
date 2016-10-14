@@ -7,6 +7,9 @@ public class VRWand_Controller : MonoBehaviour {
     public Transform aimTargetPrefab;
     public HandController hand;
 
+    public Transform lineRenderer;
+    public Transform pickupHolder;
+
     private Transform aimTargetInstance;
     private bool castRay = true;
 
@@ -42,7 +45,7 @@ public class VRWand_Controller : MonoBehaviour {
         }
 
         if (castRay && (childPickUp == null || (childPickUp.GetComponent<Pickup>() != null && !childPickUp.GetComponent<Pickup>().onHand)) )
-            CastRay(controllerT.GetChild(0).GetChild(0).forward, 50, Color.red, true);
+            CastRay(lineRenderer.forward, 50, Color.red, true);
  
 
         if (controller.GetPressUp(VRInput.triggerButton))
@@ -57,7 +60,7 @@ public class VRWand_Controller : MonoBehaviour {
         if (controller.GetPressDown(VRInput.gripButton))//Enable/disable raycasting
         {
             castRay = !castRay;
-            transform.GetChild(0).GetChild(0).gameObject.SetActive(false);//disable line renderer
+            lineRenderer.gameObject.SetActive(false);//disable line renderer
             aimTargetInstance.gameObject.SetActive(false);//disable target
         }
 
@@ -77,12 +80,12 @@ public class VRWand_Controller : MonoBehaviour {
 
     void CastRay(Vector3 direction, float maxDistance, Color color, bool drawRay =false)
     {
-        GameObject lineRenderer = transform.GetChild(0).GetChild(0).gameObject;
-        if (!lineRenderer.activeSelf)
-            lineRenderer.SetActive(true);
+        GameObject lineRendererGO = lineRenderer.gameObject;
+        if (!lineRendererGO.activeSelf)
+            lineRendererGO.SetActive(true);
 
-        Vector3 start = lineRenderer.transform.position;
-        Vector3 end = lineRenderer.transform.position + direction * maxDistance;
+        Vector3 start = lineRendererGO.transform.position;
+        Vector3 end = lineRendererGO.transform.position + direction * maxDistance;
         RaycastHit hit;
         if (Physics.Raycast(new Ray(start, direction), out hit, maxDistance, layerMask))
         {
@@ -106,13 +109,13 @@ public class VRWand_Controller : MonoBehaviour {
                     if (hit.collider.gameObject.GetComponent<FixedEquipment>() != null)
                     {
                         castRay = !castRay;
-                        transform.GetChild(0).GetChild(0).gameObject.SetActive(false);//disable line renderer
+                        lineRendererGO.SetActive(false);//disable line renderer
                         aimTargetInstance.gameObject.SetActive(false);//disable targe
                     }
 
                     currentSelectedObject.OnTriggerPress(controllerT);
                     childPickUp = currentSelectedObject.transform;
-                    lineRenderer.SetActive(false);
+                    lineRendererGO.SetActive(false);
                 }
             }
             else if (hit.collider.CompareTag("WalkableGrid"))
@@ -143,11 +146,11 @@ public class VRWand_Controller : MonoBehaviour {
             }
         }
 
-        LineRenderer lr = lineRenderer.transform.GetComponent<LineRenderer>();
+        LineRenderer lr = lineRendererGO.transform.GetComponent<LineRenderer>();
         lr.SetColors(color, color);
         lr.SetWidth(0.002f, 0.002f);
-        lr.SetPosition(0, lineRenderer.transform.position);
-        lr.SetPosition(1, lineRenderer.transform.position + direction*maxDistance);
+        lr.SetPosition(0, lineRendererGO.transform.position);
+        lr.SetPosition(1, lineRendererGO.transform.position + direction*maxDistance);
     }
 
 

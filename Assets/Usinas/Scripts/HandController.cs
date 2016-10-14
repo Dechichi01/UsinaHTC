@@ -3,6 +3,11 @@ using System.Collections;
 
 public class HandController : MonoBehaviour {
 
+    public Transform lineRenderer;
+    public Transform pickupHolder;
+    private Transform previousLineRenderer;
+    private Transform previousPickupHolder;
+
     private Animation anim;
 
     private Vector3 startLocalPos;
@@ -14,14 +19,25 @@ public class HandController : MonoBehaviour {
         startLocalRot = transform.localRotation;
 	}
 	
-    public void ControllerOn()
+    public void ControllerOn(VRWand_Controller wand)
     {
+        if (previousLineRenderer != null && previousPickupHolder != null)
+        {
+            wand.lineRenderer = previousLineRenderer;
+            wand.pickupHolder = previousPickupHolder;
+        }
+
         anim.Play("h_idle_controller");
         startLocalPos = transform.localPosition;
     }
 
-    public void ControllerOff()
+    public void ControllerOff(VRWand_Controller wand)
     {
+        previousLineRenderer = wand.lineRenderer;
+        previousPickupHolder = wand.pickupHolder;
+
+        wand.lineRenderer = lineRenderer;
+        wand.pickupHolder = pickupHolder;
         anim.Play("h_idle");
     }
 
@@ -88,7 +104,7 @@ public class HandController : MonoBehaviour {
         transform.localPosition = end;
         transform.localRotation = endRot;
 
-        anim.Play("h_idle_ctrl");
+        //anim.Play("h_idle_ctrl");
 
         //PlayAnimations(componentAnim, animName, parent);
     }

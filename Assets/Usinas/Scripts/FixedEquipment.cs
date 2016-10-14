@@ -15,6 +15,7 @@ public class FixedEquipment : SelectableObject {
     public override void OnTriggerPress(Transform controller)
     {
         ChangeToBaseShader();
+        if (!canInteract) return;
         Transform player = controller.root;
         float delta = player.position.x - Camera.main.transform.position.x;
         Vector3 arrivalPos = new Vector3(arrivalLocation.position.x, player.position.y, arrivalLocation.position.z) + transform.right * delta;
