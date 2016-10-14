@@ -71,7 +71,12 @@ public class HandController : MonoBehaviour {
         float percent = 0;
         float speed = 1 / 0.5f;
 
-        while(percent<1)
+        //start playing animations
+        string animation = ChangeToControllerAnim(animName);
+        componentAnim.Play(animName);
+        anim.Play(animation);
+
+        while (percent<1)
         {
             percent += Time.deltaTime * speed;
             transform.position = Vector3.Lerp(start, end, percent);
@@ -81,9 +86,9 @@ public class HandController : MonoBehaviour {
 
         transform.position = end;
         //Toca as animações e aguarda elas finalizarem
-        string animation = ChangeToControllerAnim(animName);
+        /*string animation = ChangeToControllerAnim(animName);
         componentAnim.Play(animName);
-        anim.Play(animation);
+        anim.Play(animation);*/
 
         while (anim.IsPlaying(animation)) yield return null;
 
