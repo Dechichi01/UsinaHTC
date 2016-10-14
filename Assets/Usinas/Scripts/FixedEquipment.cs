@@ -16,9 +16,8 @@ public class FixedEquipment : SelectableObject {
     {
         ChangeToBaseShader();
         Transform player = controller.root;
-        Vector3 delta = Camera.main.transform.position - player.position;
-        delta.y = 0;
-        Vector3 arrivalPos = new Vector3(arrivalLocation.position.x, player.position.y, arrivalLocation.position.z) - delta;
+        float delta = player.position.x - Camera.main.transform.position.x;
+        Vector3 arrivalPos = new Vector3(arrivalLocation.position.x, player.position.y, arrivalLocation.position.z) + transform.right * delta;
         StartCoroutine(BringPlayer(player.position, player.rotation, arrivalPos, arrivalLocation.rotation, player));
     }
 

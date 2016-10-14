@@ -12,6 +12,7 @@ public class Panel : FixedEquipment {
     {
         base.OnTriggerPress(controller);
         controller.GetComponent<VRWand_Controller>().hand.ControllerOff();//hand not holding controller anymore
+        //controller.FindChild("Model").gameObject.SetActive(false);
     }
 
     protected override IEnumerator BringPlayer(Vector3 startPos, Quaternion startRot, Vector3 endPos, Quaternion endRot, Transform player)
