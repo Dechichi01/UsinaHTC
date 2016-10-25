@@ -108,8 +108,8 @@ public class VRWand_Controller : MonoBehaviour {
                 {
                     if (hit.collider.gameObject.GetComponent<FixedEquipment>() != null)
                     {
-                        castRay = !castRay;
-                        lineRendererGO.SetActive(false);//disable line renderer
+                        //castRay = !castRay;
+                        //lineRendererGO.SetActive(false);//disable line renderer
                         aimTargetInstance.gameObject.SetActive(false);//disable targe
                     }
 

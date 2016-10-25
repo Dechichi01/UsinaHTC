@@ -7,10 +7,11 @@ public abstract class Interactable : MonoBehaviour {
     [SerializeField]
     protected bool canInteract;
 
-    private LayerMask previousLayer = LayerMask.NameToLayer("SelectableObject");
+    private LayerMask previousLayer;
 
     virtual protected void Start()
     {
+        previousLayer = LayerMask.NameToLayer("SelectableObject");
         gameObject.tag = "Interactable";
         canInteract = true;
     }

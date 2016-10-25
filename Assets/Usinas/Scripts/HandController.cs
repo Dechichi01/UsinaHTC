@@ -41,9 +41,9 @@ public class HandController : MonoBehaviour {
         anim.Play("h_idle");
     }
 
-    public void PerformAnimation(Transform panel, Animation componentAnim, string animName)
+    public void PerformAnimation(Transform panel, Animation componentAnim, string animName, bool isVolumeCtrl = false)
     {
-        StartCoroutine(PositionateHand(panel, componentAnim, animName));
+        StartCoroutine(Positionate_HandPanel(panel, componentAnim, animName));
     }
 
     private string ChangeToControllerAnim(string s1)
@@ -53,16 +53,14 @@ public class HandController : MonoBehaviour {
         return s2;
     }
 
-    public IEnumerator PositionateHand(Transform panel, Animation componentAnim, string animName)
+    //Used for iteractions that involves animation
+    public IEnumerator Positionate_HandPanel(Transform panel, Animation componentAnim, string animName, bool isVolCtrl = false)
     {
         //Move a mão até o painel
         Transform parent = transform.parent;
         transform.parent = null;
 
-        Vector3 delta = new Vector3(0.273831f, -0.066783f, 0.459134f);//distance from hand to panel (on animation)
-
         Vector3 start = transform.position;
-        //Vector3 end = panel.position - delta;
         Vector3 end = panel.position;
 
         Quaternion startRot = transform.rotation;
@@ -85,24 +83,28 @@ public class HandController : MonoBehaviour {
         }
 
         transform.position = end;
-        //Toca as animações e aguarda elas finalizarem
-        /*string animation = ChangeToControllerAnim(animName);
-        componentAnim.Play(animName);
-        anim.Play(animation);*/
 
+        //Wait for animation to finish
         while (anim.IsPlaying(animation)) yield return null;
 
-        //Retorna a mão na posição inicial
+        if (!isVolCtrl) StartCoroutine(Positionate_PanelHand(parent, anim, animName, isVolCtrl));
+
+        
+    }
+
+    public IEnumerator Positionate_PanelHand(Transform parent, Animation componentAnim, string animName, bool isVolCtrl = false)
+    {
+        //Retorna a mão à posição inicial
         transform.parent = parent;
 
-        start = transform.localPosition;
-        end = startLocalPos;
+        Vector3 start = transform.localPosition;
+        Vector3 end = startLocalPos;
 
-        startRot = transform.localRotation;
-        endRot = startLocalRot;
+        Quaternion startRot = transform.localRotation;
+        Quaternion endRot = startLocalRot;
 
-        percent = 0;
-        speed = 1 / 0.5f;
+        float percent = 0;
+        float speed = 1 / 0.5f;
 
         while (percent < 1)
         {
@@ -114,15 +116,10 @@ public class HandController : MonoBehaviour {
 
         transform.localPosition = end;
         transform.localRotation = endRot;
-
-        //anim.Play("h_idle_ctrl");
-
-        //PlayAnimations(componentAnim, animName, parent);
     }
 
+    /*IEnumerator PerformVolumeCtrl(Transform parent, Animation componentAnim, string animName, bool isVolCtrl = false)
+    {
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }*/
 }

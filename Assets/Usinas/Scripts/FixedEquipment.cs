@@ -24,7 +24,7 @@ public class FixedEquipment : SelectableObject {
 
     public override bool OnTriggerRelease(Transform player)
     {
-        return true;
+        return true;                                             
     }
 
     protected virtual IEnumerator BringPlayer(Vector3 startPos, Quaternion startRot, Vector3 endPos, Quaternion endRot, Transform player)

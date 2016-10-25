@@ -26,7 +26,6 @@ public class VRPlayer_Controller : MonoBehaviour {
         float walkFromLeft = leftWand.walkInput;
 
         Vector3 fwd = Vector3.ProjectOnPlane(Camera.main.transform.forward, Vector3.up);
-        Debug.Log(canMove);
         if (canMove)
         {
             transform.Rotate(Vector3.up * Time.fixedDeltaTime * rotSpeed * ((rotFromRight == 0) ? rotFromLeft : rotFromRight));
