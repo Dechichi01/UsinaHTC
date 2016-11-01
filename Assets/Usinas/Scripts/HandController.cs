@@ -8,6 +8,9 @@ public class HandController : MonoBehaviour {
     private Transform previousLineRenderer;
     private Transform previousPickupHolder;
 
+    public AnimationClip controllerOnAnim;
+    public AnimationClip controllerOffAnim;
+
     private Animation anim;
 
     private Vector3 startLocalPos;
@@ -27,7 +30,7 @@ public class HandController : MonoBehaviour {
             wand.pickupHolder = previousPickupHolder;
         }
 
-        anim.Play("h_idle_controller");
+        anim.Play(controllerOnAnim.name);
         startLocalPos = transform.localPosition;
     }
 
@@ -38,12 +41,12 @@ public class HandController : MonoBehaviour {
 
         wand.lineRenderer = lineRenderer;
         wand.pickupHolder = pickupHolder;
-        anim.Play("h_idle");
+        anim.Play(controllerOffAnim.name);
     }
 
-    public void PerformAnimation(Transform panel, Animation componentAnim, string animName, bool isVolumeCtrl = false)
+    public void PerformAnimation(Transform panel, Animation componentAnim, string[] animNames, bool isVolumeCtrl = false)
     {
-        StartCoroutine(Positionate_HandPanel(panel, componentAnim, animName));
+        StartCoroutine(Positionate_HandPanel(panel, componentAnim, animNames, isVolumeCtrl));
     }
 
     private string ChangeToControllerAnim(string s1)
@@ -54,7 +57,7 @@ public class HandController : MonoBehaviour {
     }
 
     //Used for iteractions that involves animation
-    public IEnumerator Positionate_HandPanel(Transform panel, Animation componentAnim, string animName, bool isVolCtrl = false)
+    public IEnumerator Positionate_HandPanel(Transform panel, Animation componentAnim, string[] animNames, bool isVolCtrl = false)
     {
         //Move a mão até o painel
         Transform parent = transform.parent;
@@ -70,8 +73,9 @@ public class HandController : MonoBehaviour {
         float speed = 1 / 0.5f;
 
         //start playing animations
-        string animation = ChangeToControllerAnim(animName);
-        componentAnim.Play(animName);
+        string turnOnAnimName = animNames[0];
+        string animation = ChangeToControllerAnim(turnOnAnimName);
+        componentAnim.Play(turnOnAnimName);
         anim.Play(animation);
 
         while (percent<1)
@@ -87,15 +91,24 @@ public class HandController : MonoBehaviour {
         //Wait for animation to finish
         while (anim.IsPlaying(animation)) yield return null;
 
-        if (!isVolCtrl) StartCoroutine(Positionate_PanelHand(parent, anim, animName, isVolCtrl));
-
+        Debug.Log(isVolCtrl);
+        if (!isVolCtrl) StartCoroutine(Positionate_PanelHand(parent, componentAnim, animNames, isVolCtrl));
+        else StartCoroutine(PerformVolumeCtrl(parent, componentAnim, animNames, isVolCtrl));
         
     }
 
-    public IEnumerator Positionate_PanelHand(Transform parent, Animation componentAnim, string animName, bool isVolCtrl = false)
+    public IEnumerator Positionate_PanelHand(Transform parent, Animation componentAnim, string[] animNames, bool isVolCtrl = false)
     {
         //Retorna a mão à posição inicial
         transform.parent = parent;
+
+        if (isVolCtrl)
+        {
+            string releaseAnim = animNames[2];
+            string releaseAnim_h = ChangeToControllerAnim(releaseAnim);
+            componentAnim.Play(releaseAnim);
+            anim.Play(releaseAnim_h);
+        }
 
         Vector3 start = transform.localPosition;
         Vector3 end = startLocalPos;
@@ -118,8 +131,39 @@ public class HandController : MonoBehaviour {
         transform.localRotation = endRot;
     }
 
-    /*IEnumerator PerformVolumeCtrl(Transform parent, Animation componentAnim, string animName, bool isVolCtrl = false)
+    IEnumerator PerformVolumeCtrl(Transform parent, Animation componentAnim, string[] animNames, bool isVolCtrl = false)
     {
+        int sign = (animNames[3] == "reversed")?-1:1;
 
-    }*/
+        float initialRotZ = sign*Mathf.Abs(parent.localRotation.z);
+        float finalRotZ = initialRotZ + sign*0.5f;
+
+        string rotAnim = animNames[1];
+        string rotAnim_h = ChangeToControllerAnim(rotAnim);
+
+        float rot = sign*Mathf.Abs((parent.localRotation * Quaternion.Euler(0f, 0f, -initialRotZ)).z); ;
+
+        float animTime = 0f;
+        while (animTime != anim[rotAnim_h].length)
+        {
+            //Lock CCW rotations and prevents animations jump due to rotation sign change 
+            if (sign*parent.localRotation.z <= 0 && !(sign*rot > 0.7f && animTime < 0.1f*anim[rotAnim_h].length)) 
+                animTime = Mathf.InverseLerp(initialRotZ, finalRotZ, rot) * anim[rotAnim_h].length;
+
+            componentAnim[rotAnim].speed = 0;
+            componentAnim.Play(rotAnim);
+            componentAnim[rotAnim].time = (sign ==1)?animTime:(1-animTime);
+
+            anim[rotAnim_h].speed = 0;
+            anim.Play(rotAnim_h);
+            anim[rotAnim_h].time = (sign == 1) ? animTime : (1 - animTime);
+
+            yield return null;
+
+            rot = sign*Mathf.Abs((parent.localRotation*Quaternion.Euler(0f, 0f, -initialRotZ)).z);
+        }
+
+        StartCoroutine(Positionate_PanelHand(parent, componentAnim, animNames, isVolCtrl));
+
+    }
 }

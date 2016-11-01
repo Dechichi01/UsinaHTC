@@ -4,32 +4,43 @@ using System.Collections;
 public class VolumeController : SelectableObject {
 
     private Animation anim;
-    public string turnOnAnimName;
-    public string turnOffAnimName;
+    public AnimationClip grabAnim;
+    public AnimationClip volRotateAnim;
+    public AnimationClip releaseAnim;
 
     [SerializeField]
     private HandController rightHand;
-    [SerializeField]
-    private HandController leftHand;
 
     bool turnedOn = false;
 
     protected override void Start()
     {
         base.Start();
-        anim = transform.root.GetComponent<Animation>();
+        //anim = transform.root.GetComponent<Animation>();
+        anim = GetComponent<Animation>();
     }
 
     public override void OnTriggerPress(Transform player)
     {
         if (turnedOn)
         {
-            //anim.Play(turnOffAnimName);
-            //rightHand.PlayAnimation(ChangeToControllerAnim(turnOffAnimName));
+            turnedOn = false;
+            string[] animNames = new string[4];
+            animNames[0] = grabAnim.name;
+            animNames[1] = volRotateAnim.name;
+            animNames[2] = releaseAnim.name;
+            animNames[3] = "reversed";
+            rightHand.PerformAnimation(transform.parent, anim, animNames, true);
         }
         else
         {
-            rightHand.PerformAnimation(transform.parent, anim, turnOnAnimName, true);
+            turnedOn = true;
+            string[] animNames = new string[4];
+            animNames[0] = grabAnim.name;
+            animNames[1] = volRotateAnim.name;
+            animNames[2] = releaseAnim.name;
+            animNames[3] = "direct";
+            rightHand.PerformAnimation(transform.parent, anim, animNames, true);
         }
     }
 

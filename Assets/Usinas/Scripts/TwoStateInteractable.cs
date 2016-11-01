@@ -5,32 +5,37 @@ using System;
 public class TwoStateInteractable : SelectableObject {
 
     private Animation anim;
-    public string turnOnAnimName;
-    public string turnOffAnimName;
+    public AnimationClip turnOnAnim;
+    public AnimationClip turnOffAnim;
 
     [SerializeField]
     private HandController rightHand;
-    [SerializeField]
-    private HandController leftHand;
 
-    bool turnedOn = false;
+    //[HideInInspector]
+    public bool turnedOn = false;
 
     protected override void Start()
     {
         base.Start();
-        anim = transform.root.GetComponent<Animation>();
+        //anim = transform.root.GetComponent<Animation>();
+        anim = GetComponent<Animation>();
     }
 
     public override void OnTriggerPress(Transform player)
     {
         if (turnedOn)
         {
-            //anim.Play(turnOffAnimName);
-            //rightHand.PlayAnimation(ChangeToControllerAnim(turnOffAnimName));
+            turnedOn = false;
+            string[] animNames = new string[1];
+            animNames[0] = turnOffAnim.name;
+            rightHand.PerformAnimation(transform.parent, anim, animNames);
         }
         else
         {
-            rightHand.PerformAnimation(transform.parent, anim, turnOnAnimName);
+            turnedOn = true;
+            string[] animNames = new string[1];
+            animNames[0] = turnOnAnim.name;
+            rightHand.PerformAnimation(transform.parent, anim, animNames);
         }
     }
 

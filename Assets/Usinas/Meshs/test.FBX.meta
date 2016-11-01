@@ -79,7 +79,7 @@ ModelImporter:
     7400038: h_ajuste_tap_medicao
     7400040: h_rotate3_h
     7400042: h_rotate3_antiH
-    7400044: h_rotate3_anitH-idle
+    7400044: h_rotate3_antiH-idle
     7400046: h_btn_urgencia
     7400048: h_fechar_porta
     7400050: h_idle_ctrl
@@ -1825,7 +1825,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: h_rotate3_anitH-idle
+      name: h_rotate3_antiH-idle
       takeName: Take 001
       firstFrame: 900
       lastFrame: 920
