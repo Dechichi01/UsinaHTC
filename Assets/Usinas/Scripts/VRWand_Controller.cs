@@ -23,7 +23,7 @@ public class VRWand_Controller : MonoBehaviour {
     private VRPlayer_Controller playerController;
     private Transform controllerT;
     private Transform childPickUp;
-    private SelectableObject currentSelectedObject;
+    private Interactable currentSelectedObject;
 
     bool wasTriggerReleased = true;//Used by OnTriggerStay
 
@@ -52,7 +52,7 @@ public class VRWand_Controller : MonoBehaviour {
         {
             if (childPickUp != null)
             {
-                if(childPickUp.GetComponent<SelectableObject>().OnTriggerRelease(controllerT))
+                if(childPickUp.GetComponent<Interactable>().OnTriggerRelease(controllerT))
                     childPickUp = null;
             }
         }
@@ -89,20 +89,31 @@ public class VRWand_Controller : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(new Ray(start, direction), out hit, maxDistance, layerMask))
         {
-            if(hit.collider.CompareTag("SelectableObject"))
+            Interactable intObj = hit.collider.transform.GetComponent<Interactable>();
+
+            if(intObj != null)
             {
                 //Disable target
                 aimTargetInstance.gameObject.SetActive(false);
 
-                SelectableObject obj = hit.collider.transform.GetComponent<SelectableObject>();
-                if (currentSelectedObject != obj)
+                if (currentSelectedObject != null && currentSelectedObject != intObj)
+                {
+                    intObj.OnSelected();
+                    currentSelectedObject.OnDeselect();
+                }
+
+
+                currentSelectedObject = intObj;
+
+                /*SelectableObject obj = hit.collider.transform.GetComponent<SelectableObject>();
+                if (obj !=null && currentSelectedObject != obj)
                 {
                     if (currentSelectedObject != null)
                         currentSelectedObject.ChangeToBaseShader();
 
                     currentSelectedObject = obj;
                     currentSelectedObject.ChangeToSelectedShader();
-                }
+                }*/
 
                 if (controller.GetPressDown(VRInput.triggerButton) && hit.collider.transform.parent != controllerT /*&& controllerT.childCount < 2*/)
                 {
@@ -123,7 +134,7 @@ public class VRWand_Controller : MonoBehaviour {
                 //Deselect currentObject, if any
                 if (currentSelectedObject!=null)
                 {
-                    currentSelectedObject.ChangeToBaseShader();
+                    currentSelectedObject.OnDeselect();
                     currentSelectedObject = null;
                 }
                 aimTargetInstance.position = hit.point;
@@ -141,7 +152,7 @@ public class VRWand_Controller : MonoBehaviour {
 
             if (currentSelectedObject != null)
             {
-                currentSelectedObject.ChangeToBaseShader();
+                currentSelectedObject.OnDeselect();
                 currentSelectedObject = null;
             }
         }

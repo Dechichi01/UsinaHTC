@@ -54,4 +54,14 @@ public abstract class SelectableObject : Interactable {
             }
         }
     }
+
+    public override void OnSelected()
+    {
+        ChangeToSelectedShader();
+    }
+
+    public override void OnDeselect()
+    {
+        ChangeToBaseShader();
+    }
 }

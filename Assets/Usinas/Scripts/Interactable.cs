@@ -20,6 +20,10 @@ public abstract class Interactable : MonoBehaviour {
 
     abstract public bool OnTriggerRelease(Transform player);
 
+    abstract public void OnSelected();
+
+    abstract public void OnDeselect();
+
     virtual protected void DisableInteractions()
     {
         canInteract = false;

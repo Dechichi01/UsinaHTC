@@ -11,7 +11,7 @@ public class VolumeController : SelectableObject {
     [SerializeField]
     private HandController rightHand;
 
-    bool turnedOn = false;
+    public bool turnedOn = false;
 
     protected override void Start()
     {
