@@ -15,8 +15,6 @@ public class TwoStateInteractable : SelectableObject {
     [SerializeField]
     protected VRWand_Controller wand;
 
-    protected EventController scriptController;
-
     //[HideInInspector]
     public bool turnedOn = false;
 
@@ -26,7 +24,6 @@ public class TwoStateInteractable : SelectableObject {
         //anim = transform.root.GetComponent<Animation>();
         anim = GetComponent<Animation>();
         panelCtrl = FindObjectOfType<PanelController>();
-        scriptController = GameObject.Find("objs").GetComponent<EventController>();
     }
 
     public override void OnTriggerPress(Transform controllerT)
@@ -50,8 +47,6 @@ public class TwoStateInteractable : SelectableObject {
             animNames[1] = "direct";
             rightHand.PerformAnimation(transform.parent, anim, animNames);
         }
-
-        scriptController.Manutencao();
     }
 
     public override bool OnTriggerRelease(Transform player)

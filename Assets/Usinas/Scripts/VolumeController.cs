@@ -12,7 +12,6 @@ public class VolumeController : TwoStateInteractable {
         base.Start();
         //anim = transform.root.GetComponent<Animation>();
         anim = GetComponent<Animation>();
-        scriptController = GameObject.Find("objs").GetComponent<EventController>();
     }
 
     public override void OnTriggerPress(Transform player)
@@ -38,8 +37,6 @@ public class VolumeController : TwoStateInteractable {
             animNames[3] = "direct";
             rightHand.PerformAnimation(transform.parent, anim, animNames, true);
         }
-
-        scriptController.Manutencao();
     }
 
     public override bool OnTriggerRelease(Transform player)

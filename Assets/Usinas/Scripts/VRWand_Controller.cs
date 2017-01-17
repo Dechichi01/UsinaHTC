@@ -27,11 +27,7 @@ public class VRWand_Controller : MonoBehaviour {
 
     bool wasTriggerReleased = true;//Used by OnTriggerStay
 
-    public EventController scriptController;
-
 	void Start () {
-
-        scriptController = GameObject.Find("objs").GetComponent <EventController>();
 
         playerController = this.transform.parent.GetComponent<VRPlayer_Controller>();
         controllerT = this.transform;
@@ -80,41 +76,6 @@ public class VRWand_Controller : MonoBehaviour {
         walkInput = input.y;
         if (!controller.GetPress(VRInput.padButton) || Mathf.Abs(walkInput) < 0.3f)
             walkInput = 0f;
-
-        if (controller.GetPressDown(VRInput.menuButton))
-        {
-            if (scriptController.tutoId == 12)
-            {
-                scriptController.performFocus("obj_btn_vol3");
-            }
-            if (scriptController.tutoId == 13)
-            {
-                scriptController.performFocus("btn_disjuntor4");
-            }
-            if (scriptController.tutoId == 14)
-            {
-                scriptController.performFocus("btn_tensao1");
-            }
-            if (scriptController.tutoId == 15)
-            {
-                scriptController.performFocus("obj_btn_vol1");
-            }
-            if (scriptController.tutoId == 16)
-            {
-                scriptController.performFocus("btn_disjuntor2");
-                scriptController.performFocus("btn_disjuntor3");
-            }
-            if (scriptController.tutoId == 17)
-            {
-                scriptController.performFocus("btn_urgencia");
-            }
-            if (scriptController.tutoId == 18)
-            {
-                scriptController.performFocus("btn_tensao1");
-                scriptController.performFocus("btn_tensao2");
-                scriptController.performFocus("btn_tensao3");
-            }
-        }
             
     }
 
