@@ -27,7 +27,12 @@ public class VRWand_Controller : MonoBehaviour {
 
     bool wasTriggerReleased = true;//Used by OnTriggerStay
 
+    public EventController scriptController;
+
 	void Start () {
+
+        scriptController = GameObject.Find("objs").GetComponent <EventController>();
+
         playerController = this.transform.parent.GetComponent<VRPlayer_Controller>();
         controllerT = this.transform;
         childPickUp = null;
@@ -75,6 +80,42 @@ public class VRWand_Controller : MonoBehaviour {
         walkInput = input.y;
         if (!controller.GetPress(VRInput.padButton) || Mathf.Abs(walkInput) < 0.3f)
             walkInput = 0f;
+
+        if (controller.GetPressDown(VRInput.menuButton))
+        {
+            if (scriptController.tutoId == 12)
+            {
+                scriptController.performFocus("obj_btn_vol3");
+            }
+            if (scriptController.tutoId == 13)
+            {
+                scriptController.performFocus("btn_disjuntor4");
+            }
+            if (scriptController.tutoId == 14)
+            {
+                scriptController.performFocus("btn_tensao1");
+            }
+            if (scriptController.tutoId == 15)
+            {
+                scriptController.performFocus("obj_btn_vol1");
+            }
+            if (scriptController.tutoId == 16)
+            {
+                scriptController.performFocus("btn_disjuntor2");
+                scriptController.performFocus("btn_disjuntor3");
+            }
+            if (scriptController.tutoId == 17)
+            {
+                scriptController.performFocus("btn_urgencia");
+            }
+            if (scriptController.tutoId == 18)
+            {
+                scriptController.performFocus("btn_tensao1");
+                scriptController.performFocus("btn_tensao2");
+                scriptController.performFocus("btn_tensao3");
+            }
+        }
+            
     }
 
 
@@ -95,27 +136,16 @@ public class VRWand_Controller : MonoBehaviour {
             {
                 //Disable target
                 aimTargetInstance.gameObject.SetActive(false);
+                intObj.OnSelected();
 
                 if (currentSelectedObject != null && currentSelectedObject != intObj)
                 {
-                    intObj.OnSelected();
                     currentSelectedObject.OnDeselect();
                 }
 
-
                 currentSelectedObject = intObj;
 
-                /*SelectableObject obj = hit.collider.transform.GetComponent<SelectableObject>();
-                if (obj !=null && currentSelectedObject != obj)
-                {
-                    if (currentSelectedObject != null)
-                        currentSelectedObject.ChangeToBaseShader();
-
-                    currentSelectedObject = obj;
-                    currentSelectedObject.ChangeToSelectedShader();
-                }*/
-
-                if (controller.GetPressDown(VRInput.triggerButton) && hit.collider.transform.parent != controllerT /*&& controllerT.childCount < 2*/)
+                if (controller.GetPressDown(VRInput.triggerButton) && hit.collider.transform.parent != controllerT)
                 {
                     if (hit.collider.gameObject.GetComponent<FixedEquipment>() != null)
                     {
@@ -178,10 +208,17 @@ public class VRWand_Controller : MonoBehaviour {
         }
     }
 
+    public void ToggleLineRenderer()
+    {
+        lineRenderer.gameObject.SetActive(!lineRenderer.gameObject.activeSelf);
+        castRay = !castRay;
+    }
+
     public static class VRInput
     {
         public static Valve.VR.EVRButtonId gripButton = Valve.VR.EVRButtonId.k_EButton_Grip;
         public static Valve.VR.EVRButtonId triggerButton = Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger;
+        public static Valve.VR.EVRButtonId menuButton = Valve.VR.EVRButtonId.k_EButton_ApplicationMenu;
         public static ulong padButton = SteamVR_Controller.ButtonMask.Touchpad;
 
         public static Valve.VR.EVRButtonId trackPadAxis = Valve.VR.EVRButtonId.k_EButton_Axis0;

@@ -73,7 +73,7 @@ public class SceneFadeInOut : MonoBehaviour
 		if(GameObject.Find ("Image").GetComponent<UnityEngine.UI.Image> ().canvasRenderer.GetAlpha() <= 0.1f)
 		{
 			sceneStarting = false;
-			print ("Terminou!!");
+			//print ("Terminou!!");
 		}
 	}
 

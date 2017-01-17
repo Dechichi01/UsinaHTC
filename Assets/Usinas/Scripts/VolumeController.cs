@@ -1,27 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VolumeController : SelectableObject {
+public class VolumeController : TwoStateInteractable {
 
-    private Animation anim;
     public AnimationClip grabAnim;
     public AnimationClip volRotateAnim;
     public AnimationClip releaseAnim;
-
-    [SerializeField]
-    private HandController rightHand;
-
-    public bool turnedOn = false;
 
     protected override void Start()
     {
         base.Start();
         //anim = transform.root.GetComponent<Animation>();
         anim = GetComponent<Animation>();
+        scriptController = GameObject.Find("objs").GetComponent<EventController>();
     }
 
     public override void OnTriggerPress(Transform player)
     {
+        wand.ToggleLineRenderer();
         if (turnedOn)
         {
             turnedOn = false;
@@ -42,10 +38,13 @@ public class VolumeController : SelectableObject {
             animNames[3] = "direct";
             rightHand.PerformAnimation(transform.parent, anim, animNames, true);
         }
+
+        scriptController.Manutencao();
     }
 
     public override bool OnTriggerRelease(Transform player)
     {
         return true;
     }
+
 }

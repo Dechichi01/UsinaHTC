@@ -49,11 +49,21 @@ public class HandController : MonoBehaviour {
         StartCoroutine(Positionate_HandPanel(panel, componentAnim, animNames, isVolumeCtrl));
     }
 
+    public void OpenPanelDoor(Transform panel, Animation componentAnim, string[] animNames)
+    {
+        StartCoroutine(Positionate_HandPanel(panel, componentAnim, animNames));
+    }
+
     private string ChangeToControllerAnim(string s1)
     {
         string s2 = s1.Remove(0, 1);
         s2 = s2.Insert(0, "h");
         return s2;
+    }
+
+    public void PlayAnimation(string s1)
+    {
+        anim.Play(ChangeToControllerAnim(s1));
     }
 
     //Used for iteractions that involves animation
@@ -75,6 +85,25 @@ public class HandController : MonoBehaviour {
         //start playing animations
         string turnOnAnimName = animNames[0];
         string animation = ChangeToControllerAnim(turnOnAnimName);
+
+        //Play the anim direct or reversed
+        if (animNames[1] == "reversed")
+        {
+            componentAnim[turnOnAnimName].speed = -1.0f;
+            componentAnim[turnOnAnimName].time = componentAnim[turnOnAnimName].length;
+
+            anim[animation].speed = -1.0f;
+            anim[animation].time = anim[animation].length;
+        }
+        else
+        {
+            componentAnim[turnOnAnimName].speed = 1.0f;
+            componentAnim[turnOnAnimName].time = 0;
+
+            anim[animation].speed = 1.0f;
+            anim[animation].time = 0;
+        }
+
         componentAnim.Play(turnOnAnimName);
         anim.Play(animation);
 
@@ -91,7 +120,7 @@ public class HandController : MonoBehaviour {
         //Wait for animation to finish
         while (anim.IsPlaying(animation)) yield return null;
 
-        Debug.Log(isVolCtrl);
+        //Debug.Log(isVolCtrl);
         if (!isVolCtrl) StartCoroutine(Positionate_PanelHand(parent, componentAnim, animNames, isVolCtrl));
         else StartCoroutine(PerformVolumeCtrl(parent, componentAnim, animNames, isVolCtrl));
         
@@ -129,6 +158,9 @@ public class HandController : MonoBehaviour {
 
         transform.localPosition = end;
         transform.localRotation = endRot;
+
+        TwoStateInteractable obj = componentAnim.transform.GetComponent<TwoStateInteractable>();
+        if (obj !=null) obj.ToggleLineRenderer();
     }
 
     IEnumerator PerformVolumeCtrl(Transform parent, Animation componentAnim, string[] animNames, bool isVolCtrl = false)
@@ -164,6 +196,61 @@ public class HandController : MonoBehaviour {
         }
 
         StartCoroutine(Positionate_PanelHand(parent, componentAnim, animNames, isVolCtrl));
+    }
 
+    //Used for iteractions that involves animation
+    public IEnumerator OpenDoor(Transform panel, Animation componentAnim, string[] animNames)
+    {
+        //Move a mão até o painel
+        Transform parent = transform.parent;
+        transform.parent = null;
+
+        Vector3 start = transform.position;
+        Vector3 end = panel.position;
+
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = panel.rotation;
+
+        float percent = 0;
+        float speed = 1 / 0.5f;
+
+        //start playing animations
+        string handAnim = animNames[0];
+        string openAnim = animNames[1];
+        string animation = ChangeToControllerAnim(handAnim);
+
+        componentAnim.Play(handAnim);
+        anim.Play(animation);
+        Debug.Log("APARECdfasdfasfsadfasdfdsadfsE");
+        Debug.LogWarning("askjsakjsakjsajkaskj");
+        while (percent < 1)
+        {
+            percent += Time.deltaTime * speed;
+            transform.position = Vector3.Lerp(start, end, percent);
+            transform.rotation = Quaternion.Lerp(startRot, endRot, percent);
+            yield return null;
+        }
+
+        transform.position = end;
+
+        start = transform.localPosition;
+        end = startLocalPos;
+
+        startRot = transform.localRotation;
+        endRot = startLocalRot;
+
+        percent = 0;
+        speed = 1 / 0.5f;
+
+        while (percent < 1)
+        {
+            percent += Time.deltaTime * speed;
+            transform.localPosition = Vector3.Lerp(start, end, percent);
+            transform.localRotation = Quaternion.Lerp(startRot, endRot, percent);
+            yield return null;
+        }
+
+        transform.localPosition = end;
+        transform.localRotation = endRot;
     }
 }

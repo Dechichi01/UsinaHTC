@@ -144,7 +144,7 @@ ModelImporter:
     4300052: obj_btn_vol3
     7400000: p_idle-macaneta
     7400002: p_all_animations
-    7400004: p_abrir_painel
+    7400004: p_abrir_painel1
     7400006: p_abrir_painel
     7400008: p_idle-rele_do_tap
     7400010: p_rotate2
@@ -454,7 +454,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: p_abrir_painel
+      name: p_abrir_painel1
       takeName: Take 001
       firstFrame: 80
       lastFrame: 120
@@ -2222,6 +2222,90 @@ ModelImporter:
       takeName: Take 001
       firstFrame: 1000
       lastFrame: 1070
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: obj_baseBotao
+        weight: 1
+      - path: obj_botao_comum
+        weight: 1
+      - path: obj_botao_vert1
+        weight: 1
+      - path: obj_botao_vert2
+        weight: 1
+      - path: obj_botao_vert3
+        weight: 1
+      - path: obj_btn_vol1
+        weight: 1
+      - path: obj_btn_vol3
+        weight: 1
+      - path: obj_conjunto_cabo
+        weight: 1
+      - path: obj_fios_branco001
+        weight: 1
+      - path: obj_fios_preto001
+        weight: 1
+      - path: obj_interruptor1
+        weight: 1
+      - path: obj_interruptor2
+        weight: 1
+      - path: obj_interruptor3
+        weight: 1
+      - path: obj_interruptor4
+        weight: 1
+      - path: obj_interruptor5
+        weight: 1
+      - path: obj_interruptor6
+        weight: 1
+      - path: obj_interruptor7
+        weight: 1
+      - path: obj_painel_porta
+        weight: 1
+      - path: obj_painel_porta/obj_painel_macaneta
+        weight: 1
+      - path: obj_painel_porta/obj_painel_porta_borracha
+        weight: 1
+      - path: obj_painel_porta/obj_painel_porta_joint1
+        weight: 1
+      - path: obj_painel_porta/obj_painel_porta_trinco
+        weight: 1
+      - path: obj_painel_porta_joint2
+        weight: 1
+      - path: obj_painel_porta_joint3
+        weight: 1
+      - path: obj_painel_porta_joint4
+        weight: 1
+      - path: obj_painel_porta_joint5
+        weight: 1
+      - path: obj_painel_traseira
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: p_abrir_painel
+      takeName: Take 001
+      firstFrame: 60
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

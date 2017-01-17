@@ -60,7 +60,7 @@ ModelImporter:
     7400000: h_all_animations
     7400002: h_idle-macaneta
     7400004: h_rotate1
-    7400006: h_abrir_painel
+    7400006: h_abrir_painel1
     7400008: h_idle
     7400010: h_rele_do_tap3
     7400012: h_rele_do_tap1
@@ -83,6 +83,7 @@ ModelImporter:
     7400046: h_btn_urgencia
     7400048: h_fechar_porta
     7400050: h_idle_ctrl
+    7400052: h_abrir_painel
     9500000: //RootNode
     11100000: //RootNode
     13700000: arm_mesh_nosleve
@@ -343,7 +344,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: h_abrir_painel
+      name: h_abrir_painel1
       takeName: Take 001
       firstFrame: 80
       lastFrame: 120
@@ -2063,6 +2064,84 @@ ModelImporter:
       takeName: Take 001
       firstFrame: 29
       lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: arm_mesh_nosleve
+        weight: 1
+      - path: r-upperarm-movement
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-forearm-twist
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-index-low
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-index-low/r-index-mid
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-index-low/r-index-mid/r-index-tip
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-middle-low
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-middle-low/r-middle-mid
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-middle-low/r-middle-mid/r-middle-tip
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-pinky-low
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-pinky-low/r-pinky-mid
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-pinky-low/r-pinky-mid/r-pinky-tip
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-ring-low
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-ring-low/r-ring-mid
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-ring-low/r-ring-mid/r-ring-tip
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-thumb-low
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-thumb-low/r-thumb-mid
+        weight: 1
+      - path: r-upperarm-movement/r-upperarm/r-forearm/r-rist/r-thumb-low/r-thumb-mid/r-thumb-tip
+        weight: 1
+      - path: R_Wrist_Controller
+        weight: 1
+      - path: R_Wrist_Controller/r-ik
+        weight: 1
+      - path: top-sleve
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: h_abrir_painel
+      takeName: Take 001
+      firstFrame: 60
+      lastFrame: 120
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
