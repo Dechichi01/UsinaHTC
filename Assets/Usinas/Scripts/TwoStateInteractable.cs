@@ -26,9 +26,9 @@ public class TwoStateInteractable : SelectableObject {
         panelCtrl = FindObjectOfType<PanelController>();
     }
 
-    public override void OnTriggerPress(Transform controllerT)
+    public override void OnTriggerPress(VRWand_Controller wand)
     {
-        controllerT.GetComponent<VRWand_Controller>().ToggleLineRenderer();
+        wand.ToggleLineRenderer();
         if (turnedOn)
         {
             turnedOn = false;
@@ -49,7 +49,7 @@ public class TwoStateInteractable : SelectableObject {
         }
     }
 
-    public override bool OnTriggerRelease(Transform player)
+    public override bool OnTriggerRelease(VRWand_Controller wand)
     {
         return true;
     }

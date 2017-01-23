@@ -14,7 +14,7 @@ public class VolumeController : TwoStateInteractable {
         anim = GetComponent<Animation>();
     }
 
-    public override void OnTriggerPress(Transform player)
+    public override void OnTriggerPress(VRWand_Controller wand)
     {
         wand.ToggleLineRenderer();
         if (turnedOn)
@@ -39,7 +39,7 @@ public class VolumeController : TwoStateInteractable {
         }
     }
 
-    public override bool OnTriggerRelease(Transform player)
+    public override bool OnTriggerRelease(VRWand_Controller wand)
     {
         return true;
     }

@@ -24,11 +24,11 @@ public class HandController : MonoBehaviour {
 	
     public void ControllerOn(VRWand_Controller wand)
     {
-        if (previousLineRenderer != null && previousPickupHolder != null)
+        /*if (previousLineRenderer != null && previousPickupHolder != null)
         {
             wand.lineRenderer = previousLineRenderer;
             wand.pickupHolder = previousPickupHolder;
-        }
+        }*/
 
         anim.Play(controllerOnAnim.name);
         startLocalPos = transform.localPosition;
@@ -36,10 +36,11 @@ public class HandController : MonoBehaviour {
 
     public void ControllerOff(VRWand_Controller wand)
     {
+        /*
         previousLineRenderer = wand.lineRenderer;
         previousPickupHolder = wand.pickupHolder;
 
-        wand.lineRenderer = lineRenderer;
+        wand.lineRenderer = lineRenderer;*/
         wand.pickupHolder = pickupHolder;
         anim.Play(controllerOffAnim.name);
     }

@@ -17,20 +17,20 @@ public class Panel : FixedEquipment {
         base.Start();
     }
 
-    public override void OnTriggerPress(Transform controller)
+    public override void OnTriggerPress(VRWand_Controller wand)
     {
         if (!canInteract) return;
 
         GetComponent<BoxCollider>().enabled = false;
-        controller.GetComponent<VRWand_Controller>().hand.ControllerOff(controller.GetComponent<VRWand_Controller>());//hand not holding controller anymore
-        controller.FindChild("Model").gameObject.SetActive(false);
+        wand.hand.ControllerOff(wand);//hand not holding controller anymore
+        wand.transform.FindChild("Model").gameObject.SetActive(false);
 
         if (!open)
         {
             string[] animations = new string[2];
             animations[1] = waitHandAnim.name;
             animations[0] = openAnim.name;
-            controller.GetComponent<VRWand_Controller>().hand.PerformAnimation(transform, anim, animations);
+            wand.hand.PerformAnimation(transform, anim, animations);
             open = true;
         }
         else
@@ -38,7 +38,7 @@ public class Panel : FixedEquipment {
             string[] animations = new string[2];
             animations[1] = waitHandAnim.name;
             animations[0] = closeAnim.name;
-            controller.GetComponent<VRWand_Controller>().hand.PerformAnimation(transform, anim, animations);
+            wand.hand.PerformAnimation(transform, anim, animations);
             open = false;
         }
     }

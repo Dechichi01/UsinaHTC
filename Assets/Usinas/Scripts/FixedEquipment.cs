@@ -12,17 +12,17 @@ public class FixedEquipment : SelectableObject {
         //arrivePosition = transform.FindChild("PlayerPosition").position;
 	}
 
-    public override void OnTriggerPress(Transform controller)
+    public override void OnTriggerPress(VRWand_Controller wand)
     {
         ChangeToBaseShader();
         if (!canInteract) return;
-        Transform player = controller.root;
+        Transform player = wand.transform.root;
         float delta = player.position.x - Camera.main.transform.position.x;
         Vector3 arrivalPos = new Vector3(arrivalLocation.position.x, player.position.y, arrivalLocation.position.z) + transform.right * delta;
         StartCoroutine(BringPlayer(player.position, player.rotation, arrivalPos, arrivalLocation.rotation, player));
     }
 
-    public override bool OnTriggerRelease(Transform player)
+    public override bool OnTriggerRelease(VRWand_Controller wand)
     {
         return true;                                             
     }

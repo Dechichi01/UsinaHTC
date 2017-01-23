@@ -3,10 +3,10 @@ using System.Collections;
 
 public class Pickup : SelectableObject {
 
-
+    Transform initialParent;    
     Vector3 initialPosition;
-    float approximationTime = 3f;
-    float moveAwayTime = 1.2f;
+    public float approximationTime = 1.6f;
+    public float moveAwayTime = 1.2f;
 
     private float initialScale;
     public float onHandsScale = 0.1f;
@@ -18,99 +18,104 @@ public class Pickup : SelectableObject {
     {
         base.Start();
         initialPosition = transform.position;
+        initialParent = transform.parent;
 
         initialScale = transform.localScale.x;
     }
 
-    public override void OnTriggerPress(Transform player)
-    {
-        if (canInteract)
-            transform.parent = player;
-
-        Approximate();
-    }
-
-    public override bool OnTriggerRelease(Transform player)
+    public override void OnTriggerPress(VRWand_Controller wand)
     {
         if (canInteract)
         {
-            transform.parent = null;
-            ChangeToBaseShader();
-            MoveAway();
-            return true;
+            if (transform.parent != wand.transform)
+            {
+                transform.parent = wand.transform;
+                wand.childPickup = this;
+                Approximate(wand);
+            }
+            else
+            {
+                transform.parent = initialParent;
+                wand.childPickup = null;
+                ChangeToBaseShader();
+                MoveAway(wand);
+            }
         }
-        return false;
     }
 
-    public void Approximate()
+    public override bool OnTriggerRelease(VRWand_Controller wand)
+    {
+        return true;
+    }
+
+    public void Approximate(VRWand_Controller wand)
     {
         if (canInteract && !onHand)
         {
             ChangeToBaseShader();
-            StartCoroutine(PerformApproximate());
+            StartCoroutine(PerformApproximate(wand));
         }
     }
 
-    public void MoveAway()
+    public void MoveAway(VRWand_Controller wand)
     {
         if (canInteract && onHand)
-            StartCoroutine(PerformMoveAway());
+            StartCoroutine(PerformMoveAway(wand));
     }
 
-    IEnumerator PerformApproximate()
+    IEnumerator PerformApproximate(VRWand_Controller wand)
     {
+        wand.ToggleLineRenderer();
         Transform targetChild = transform.parent.FindChild("Model").GetChild(1);
 
         canInteract = false;
-        onHand = true;
 
         float moveVelocity = 1 / approximationTime;
         float percent = 0;
-        Vector3 startPosition = transform.position;
+        Vector3 endScale = transform.localScale * onHandsScale;
+
         while (percent < 1)
         {
-            //position
             percent += Time.deltaTime * moveVelocity;
             transform.position = Vector3.Lerp(transform.position, targetChild.position, percent);
-            //scale
-            float size = Mathf.Lerp(transform.localScale.x, onHandsScale, percent);
-            transform.localScale = new Vector3(size, size, size);
-
+            transform.localScale = Vector3.Lerp(transform.localScale, endScale, percent);
             yield return null;
         }
         transform.position = targetChild.position;
-        transform.localScale = new Vector3(onHandsScale, onHandsScale, onHandsScale);
+        transform.localScale = endScale;
+
+        onHand = true;
         canInteract = true;
 
     }
 
-    IEnumerator PerformMoveAway()
+    IEnumerator PerformMoveAway(VRWand_Controller wand)
     {
         canInteract = false;
         onHand = false;
+
         float moveVelocity = 1 / moveAwayTime;
         float percent = 0;
         Vector3 startPosition = transform.position;
         Vector3 endPosition = initialPosition;
+        Vector3 startScale = transform.localScale;
+        Vector3 endScale = startScale / onHandsScale;
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.identity;
         while (percent <1)
         {
-            //position
             percent += Time.deltaTime * moveVelocity;
             transform.position = Vector3.Lerp(startPosition, endPosition, percent);
-            //rotation
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.identity, percent);
-
-            //size
-            float size = Mathf.Lerp(onHandsScale, initialScale, percent);
-            transform.localScale = new Vector3(size, size, size);
-
+            transform.localScale = Vector3.Lerp(startScale, endScale, percent);
+            transform.rotation = Quaternion.Slerp(startRot, endRot, percent);
             yield return null;
         }
         transform.position = endPosition;
-        transform.rotation = Quaternion.identity;
-        transform.localScale = new Vector3(initialScale, initialScale, initialScale);
+        transform.rotation = endRot;
+        transform.localScale = endScale;
         canInteract = true;
-    }
 
+        wand.ToggleLineRenderer();
+    }
 
 }
