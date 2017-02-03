@@ -3,9 +3,9 @@ using System.Collections;
 
 public class HandController : MonoBehaviour {
 
-    public Transform lineRenderer;
+    public LineRenderer lineRenderer;
     public Transform pickupHolder;
-    private Transform previousLineRenderer;
+    private LineRenderer previousLineRenderer;
     private Transform previousPickupHolder;
 
     public AnimationClip controllerOnAnim;
@@ -22,8 +22,17 @@ public class HandController : MonoBehaviour {
         startLocalRot = transform.localRotation;
 	}
 	
-    public void ControllerOn(VRWand_Controller wand)
+    public void ControllerOn(VRInteraction interaction, VRWand_Controller wand)
     {
+        wand.transform.FindChild("Model").gameObject.SetActive(true);
+        VRRayInteraction rayInteract = (VRRayInteraction)interaction;
+        if (!rayInteract)
+        {
+            Debug.LogWarning("No RayInteraction passed to toggle raycast!");
+            return;
+        }
+        if (previousLineRenderer != null)
+            rayInteract.SetLineRenderer(previousLineRenderer);
         /*if (previousLineRenderer != null && previousPickupHolder != null)
         {
             wand.lineRenderer = previousLineRenderer;
@@ -34,14 +43,26 @@ public class HandController : MonoBehaviour {
         startLocalPos = transform.localPosition;
     }
 
-    public void ControllerOff(VRWand_Controller wand)
+    public void ControllerOff(VRInteraction interaction, VRWand_Controller wand)
     {
+        wand.transform.FindChild("Model").gameObject.SetActive(false);
+
+        VRRayInteraction rayInteract = (VRRayInteraction)interaction;
+        if (!rayInteract)
+        {
+            Debug.LogWarning("No RayInteraction passed to toggle raycast!");
+            return;
+        }
+
+        previousLineRenderer = rayInteract.GetLineRenderer();
+        rayInteract.SetLineRenderer(lineRenderer);
         /*
         previousLineRenderer = wand.lineRenderer;
         previousPickupHolder = wand.pickupHolder;
 
         wand.lineRenderer = lineRenderer;*/
-        wand.pickupHolder = pickupHolder;
+
+        //wand.pickupHolder = pickupHolder;
         anim.Play(controllerOffAnim.name);
     }
 

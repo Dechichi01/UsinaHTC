@@ -16,9 +16,9 @@ public abstract class Interactable : MonoBehaviour {
         canInteract = true;
     }
 
-    abstract public void OnTriggerPress(VRWand_Controller wand);
+    abstract public void OnTriggerPress(VRInteraction caller, VRWand_Controller wand);
 
-    abstract public bool OnTriggerRelease(VRWand_Controller wand);
+    abstract public bool OnTriggerRelease(VRInteraction caller, VRWand_Controller wand);
 
     abstract public void OnSelected();
 

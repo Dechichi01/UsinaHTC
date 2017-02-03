@@ -5,7 +5,8 @@ using System;
 public class VRRayInteraction : VRInteraction {
 
     public LayerMask interactMask;
-    public LineRenderer lineRenderer;
+    [SerializeField]
+    private LineRenderer lineRenderer;
     public Transform aimTargetPrefab;
 
     private Transform aimTargetInstance;
@@ -13,7 +14,7 @@ public class VRRayInteraction : VRInteraction {
     
     void OnEnable()
     {
-        lineRenderer.SetWidth(0.002f, 0.002f);
+        SetLineRenderer(lineRenderer);
 
         aimTargetInstance = Instantiate(aimTargetPrefab) as Transform;
         aimTargetInstance.gameObject.SetActive(false);
@@ -28,7 +29,17 @@ public class VRRayInteraction : VRInteraction {
             aimTargetInstance.gameObject.SetActive(!aimTargetInstance.gameObject.activeSelf);
     }
 
-    public override bool CheckForSelectedObjects(float radius)
+    public void SetLineRenderer(LineRenderer lr)
+    {
+        lr.SetWidth(0.002f, 0.002f);
+        lineRenderer.gameObject.SetActive(false);
+        lr.gameObject.SetActive(true);
+        lineRenderer = lr;
+    }
+
+    public LineRenderer GetLineRenderer() { return lineRenderer; }
+
+    public override bool CheckForInteractables(float radius)
     {
         aimTargetInstance.gameObject.SetActive(false);
         if (!castRay) return false;
@@ -81,7 +92,7 @@ public class VRRayInteraction : VRInteraction {
     public override void TriggerPressed(VRWand_Controller wand)
     {
         if (interactableInrange != null)
-            interactableInrange.OnTriggerPress(wand);
+            interactableInrange.OnTriggerPress(this, wand);
         else if (hit.collider.CompareTag("WalkableGrid"))
             wand.transform.root.position = new Vector3(hit.point.x, wand.transform.root.position.y, hit.point.z);
     }
@@ -89,7 +100,7 @@ public class VRRayInteraction : VRInteraction {
     public override void TriggerReleased(VRWand_Controller wand)
     {
         if (interactableInrange != null)
-            interactableInrange.OnTriggerRelease(wand);
+            interactableInrange.OnTriggerRelease(this,wand);
     }
 
     public override void GripPressed(VRWand_Controller wand)

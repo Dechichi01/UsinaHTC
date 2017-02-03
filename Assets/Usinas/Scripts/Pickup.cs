@@ -23,7 +23,7 @@ public class Pickup : SelectableObject {
         initialScale = transform.localScale.x;
     }
 
-    public override void OnTriggerPress(VRWand_Controller wand)
+    public override void OnTriggerPress(VRInteraction caller, VRWand_Controller wand)
     {
         if (canInteract)
         {
@@ -43,7 +43,7 @@ public class Pickup : SelectableObject {
         }
     }
 
-    public override bool OnTriggerRelease(VRWand_Controller wand)
+    public override bool OnTriggerRelease(VRInteraction caller, VRWand_Controller wand)
     {
         return true;
     }

@@ -12,7 +12,7 @@ public class FixedEquipment : SelectableObject {
         //arrivePosition = transform.FindChild("PlayerPosition").position;
 	}
 
-    public override void OnTriggerPress(VRWand_Controller wand)
+    public override void OnTriggerPress(VRInteraction caller, VRWand_Controller wand)
     {
         ChangeToBaseShader();
         if (!canInteract) return;
@@ -22,7 +22,7 @@ public class FixedEquipment : SelectableObject {
         StartCoroutine(BringPlayer(player.position, player.rotation, arrivalPos, arrivalLocation.rotation, player));
     }
 
-    public override bool OnTriggerRelease(VRWand_Controller wand)
+    public override bool OnTriggerRelease(VRInteraction caller, VRWand_Controller wand)
     {
         return true;                                             
     }

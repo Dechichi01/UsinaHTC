@@ -48,7 +48,7 @@ public class VRWand_Controller : MonoBehaviour {
             return;
         }
 
-        vrInteraction.CheckForSelectedObjects(50f);
+        vrInteraction.CheckForInteractables(50f);
 
         if (controller.GetPressDown(VRInput.triggerButton))
             vrInteraction.TriggerPressed(this);
