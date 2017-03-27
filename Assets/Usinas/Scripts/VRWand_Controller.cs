@@ -53,7 +53,6 @@ public class VRWand_Controller : MonoBehaviour {
         if (controller.GetPressDown(VRInput.triggerButton))
             vrInteraction.TriggerPressed(this);
 
-        //Release grabbed object
         if (controller.GetPressUp(VRInput.triggerButton))
             vrInteraction.TriggerReleased(this);
 
