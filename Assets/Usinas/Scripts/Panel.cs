@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Panel : FixedEquipment {
+public class Panel : FixedEquipment_Ray {
 
     private Animation anim;
 

@@ -40,11 +40,13 @@ public class VRTouchInteraction : VRInteraction
 
     public override void TriggerPressed(VRWand_Controller wand)
     {
-        throw new NotImplementedException();
+        if (interactableInrange != null)
+            interactableInrange.OnTriggerPress(this, wand);
     }
 
     public override void TriggerReleased(VRWand_Controller wand)
     {
-        throw new NotImplementedException();
+        if (interactableInrange != null)
+            interactableInrange.OnTriggerRelease(this, wand);
     }
 }

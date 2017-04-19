@@ -181,7 +181,7 @@ public class HandController : MonoBehaviour {
         transform.localPosition = end;
         transform.localRotation = endRot;
 
-        TwoStateInteractable obj = componentAnim.transform.GetComponent<TwoStateInteractable>();
+        TwoStateInteractable_Ray obj = componentAnim.transform.GetComponent<TwoStateInteractable_Ray>();
         if (obj !=null) obj.ToggleLineRenderer();
     }
 

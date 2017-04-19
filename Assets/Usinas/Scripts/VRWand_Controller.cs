@@ -7,6 +7,7 @@ public class VRWand_Controller : MonoBehaviour {
     public LayerMask interactMask;
     public HandController hand;
     public Transform pickupHolder;
+    public float throwSpeed = 2;
     #endregion
 
     #region VR Controller variables
@@ -18,7 +19,7 @@ public class VRWand_Controller : MonoBehaviour {
     private VRInteraction vrInteraction;
     private VRPlayer_Controller playerController;
     private Transform controllerT;
-    private Pickup _childPickup = null;
+    private Pickup_Ray _childPickup = null;
     #endregion
 
     #region Public Variables
@@ -26,11 +27,12 @@ public class VRWand_Controller : MonoBehaviour {
     public float rotInput;
     [HideInInspector]
     public float walkInput;
-    public Pickup childPickup
+    public Pickup_Ray childPickup
     {
         get { return _childPickup; }
         set { _childPickup = value; }
     }
+    public Vector3 velocity { get { return controller.velocity; } }
     #endregion
 
     void Start () {

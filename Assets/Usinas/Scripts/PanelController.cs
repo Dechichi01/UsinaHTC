@@ -25,7 +25,7 @@ public class PanelController : MonoBehaviour {
 
 	public void ChangeState(string name, bool state)
     {
-        TwoStateInteractable obj = (TwoStateInteractable)panelComponentsDict[name];
+        TwoStateInteractable_Ray obj = (TwoStateInteractable_Ray)panelComponentsDict[name];
 
         if (obj != null) SetStateBtn(panelComponentsDict[name], state);
 
@@ -33,7 +33,7 @@ public class PanelController : MonoBehaviour {
 
     public bool GetStateBtn(Interactable interactable)
     {
-        TwoStateInteractable obj = (TwoStateInteractable)interactable;
+        TwoStateInteractable_Ray obj = (TwoStateInteractable_Ray)interactable;
 
         if (obj != null) return obj.turnedOn;
 
@@ -42,14 +42,14 @@ public class PanelController : MonoBehaviour {
 
     public void SetStateBtn(Interactable interactable, bool state)
     {
-        TwoStateInteractable obj = (TwoStateInteractable)interactable;
+        TwoStateInteractable_Ray obj = (TwoStateInteractable_Ray)interactable;
 
         if (obj != null) obj.turnedOn = state;
     }
 
     public bool GetStateVolume(Interactable interactable)
     {
-        VolumeController obj = (VolumeController)interactable;
+        VolumeController_Ray obj = (VolumeController_Ray)interactable;
 
         if (obj != null) return obj.turnedOn;
 
@@ -58,7 +58,7 @@ public class PanelController : MonoBehaviour {
 
     public void SetStateVolume(Interactable interactable, bool state)
     {
-        VolumeController obj = (VolumeController)interactable;
+        VolumeController_Ray obj = (VolumeController_Ray)interactable;
 
         if (obj != null) obj.turnedOn = state;
     }
